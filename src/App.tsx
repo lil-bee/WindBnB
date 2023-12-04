@@ -10,6 +10,18 @@ type FormState = {
   guestChild?: number;
 };
 
+type Stay = {
+  city: string;
+  country: string;
+  superHost: boolean;
+  title: string;
+  rating: number;
+  maxGuests: number;
+  type: string;
+  beds: number | null;
+  photo: string;
+};
+
 function App() {
   console.log(stays)
   const [form, setForm] = useState({
@@ -17,6 +29,7 @@ function App() {
     adults: 0,
     children: 0
   })
+  const [filteredStays, setFilteredStays] = useState<Stay[]>(stays);
   const handleFormChange = (newFormState: FormState) => {
     setForm({
       ...form,
@@ -24,6 +37,20 @@ function App() {
       adults: newFormState.guestAdult !== undefined ? Number(newFormState.guestAdult) : 0,
       children: newFormState.guestChild !== undefined ? Number(newFormState.guestChild) : 0,
     });
+    // Panggil fungsi untuk memfilter stays berdasarkan form baru
+    filterStays(newFormState);
+  };
+  const filterStays = (filter: FormState) => {
+    // Filter stays berdasarkan nilai form
+    const filtered = stays.filter((stay) => {
+      const locationMatch = stay.city.toLowerCase().includes(filter.location?.toLowerCase() || '');
+      const totalGuestsMatch = stay.maxGuests >= (filter.guestAdult || 0) + (filter.guestChild || 0);
+
+      return locationMatch && totalGuestsMatch
+    });
+
+    // Update state filteredStays dengan hasil filter
+    setFilteredStays(filtered);
   };
   console.log(form)
 
@@ -39,7 +66,7 @@ function App() {
         <Box display="flex" justifyContent="center" alignItems="center">
           <SimpleGrid spacing={8} columns={{ sm: 1, md: 2, lg: 3 }}>
 
-            {stays && stays.map((x, i) => (
+            {filteredStays && filteredStays.map((x, i) => (
               <Box key={i} maxW='sm' borderRadius='lg' overflow='hidden'>
                 <Image w={{ sm: "350px", md: "395px" }} h={{ sm: "238px", md: "265px" }} objectFit="cover" borderRadius="24px" src={x.photo} />
 

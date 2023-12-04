@@ -90,7 +90,7 @@ function Header({ onChange }: { onChange: (newFormState: FormState) => void }) {
                             </InputGroup>
                             <HStack display="flex" >
                                 <Box>
-                                    {city.filter(c => c.includes(form.location))
+                                    {city.filter(c => c.includes(form.location || ''))
                                         .map((x, i) => (
                                             <Text key={i}>{x.charAt(0).toUpperCase() + x.slice(1)}, Finland</Text>
                                         ))}
