@@ -1,5 +1,5 @@
 import stays from '../stays.json'
-import { Box, Badge, Text, Image, SimpleGrid, HStack, Heading, Container } from '@chakra-ui/react'
+import { Box, Link, Badge, Text, Image, SimpleGrid, HStack, Heading, Container } from '@chakra-ui/react'
 import { StarIcon } from '@chakra-ui/icons'
 import Header from './components/header'
 import { useState } from 'react'
@@ -52,29 +52,28 @@ function App() {
     // Update state filteredStays dengan hasil filter
     setFilteredStays(filtered);
   };
-  console.log(form)
+  console.log(filteredStays)
 
   return (
     <>
-      <Container px={{ sm: "12px", md: "50px", lg: "100px" }} maxW="container.xl" p={0}>
-
+      <Container px={{ base: "12px", md: "50px", lg: "100px" }} maxW="container.xl">
         <Header onChange={handleFormChange} />
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Heading>Stays in Finland</Heading>
-          <Text>{stays.length} + stays</Text>
+        <Box mb="32px" display="flex" alignItems="center" justifyContent="space-between">
+          <Heading fontSize="24px">Stays in Finland</Heading>
+          <Text>{filteredStays.length} stays</Text>
         </Box>
         <Box display="flex" justifyContent="center" alignItems="center">
           <SimpleGrid spacing={8} columns={{ sm: 1, md: 2, lg: 3 }}>
 
-            {filteredStays && filteredStays.map((x, i) => (
-              <Box key={i} maxW='sm' borderRadius='lg' overflow='hidden'>
-                <Image w={{ sm: "350px", md: "395px" }} h={{ sm: "238px", md: "265px" }} objectFit="cover" borderRadius="24px" src={x.photo} />
+            {filteredStays ? filteredStays.map((x, i) => (
+              <Box key={i} maxW={{ base: "350px", md: "395px" }} borderRadius='lg' overflow='hidden'>
+                <Image w={{ base: "350px", md: "395px" }} h={{ base: "238px", md: "265px" }} objectFit="cover" borderRadius="24px" src={x.photo} />
 
                 <Box py="12px">
                   <Box display='flex' justifyContent="space-between" alignItems='center'>
                     <Box display='flex'>
                       {x.superHost && (
-                        <Badge borderRadius='full' px='2' mr="10px">
+                        <Badge borderRadius="full" py="3px" px="6px" variant='outline' mr="10px">
                           Super Host
                         </Badge>
                       )}
@@ -108,9 +107,26 @@ function App() {
                   </Box>
                 </Box>
               </Box>
-            ))}
+            )) : (
+              <Box>
+                <Heading>Oops, Data Not Found</Heading>
+              </Box>
+            )}
           </SimpleGrid>
 
+        </Box >
+        <Box display="flex" justifyContent="center" alignItems="center" position="relative">
+          <Text fontSize="sm" color="gray.500" mb="10px" mt="16">
+            created by{" "}
+            <Link
+              fontWeight="semibold"
+              href="https://github.com/lil-bee"
+              target="_blank"
+            >
+              lilbee
+            </Link>{" "}
+            - devChallenges.io
+          </Text>
         </Box>
       </Container >
     </>
