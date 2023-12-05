@@ -1,11 +1,4 @@
-import { extendTheme, withDefaultProps } from "@chakra-ui/react";
-
-const stylesInput = {
-  borderRadius: "116px",
-  bgColor: "red",
-  boxShadow: "0px 1px 6px 0px rgba(0, 0, 0, 0.10)",
-  focusBorderColor: "white",
-};
+import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   colors: {
